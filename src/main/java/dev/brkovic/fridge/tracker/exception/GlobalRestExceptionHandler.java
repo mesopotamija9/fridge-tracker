@@ -19,14 +19,14 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(apiException.getStatus()).body(createExceptionResponseDTO(apiException));
     }
 
-    @ExceptionHandler(value = {ValidationException.class})
-    protected ResponseEntity<ExceptionResponseDTO> handleValidationException(ValidationException validationException) {
-        switch (validationException.getSeverityLevel()){
-            case WARN -> log.warn(VALIDATION_EXCEPTION_OCCURRED, validationException);
-            case ERROR -> log.error(VALIDATION_EXCEPTION_OCCURRED, validationException);
+    @ExceptionHandler(value = {InternalException.class})
+    protected ResponseEntity<ExceptionResponseDTO> handleValidationException(InternalException internalException) {
+        switch (internalException.getSeverityLevel()){
+            case WARN -> log.warn(VALIDATION_EXCEPTION_OCCURRED, internalException);
+            case ERROR -> log.error(VALIDATION_EXCEPTION_OCCURRED, internalException);
         }
 
-        return ResponseEntity.status(validationException.getStatus()).body(createExceptionResponseDTO(validationException));
+        return ResponseEntity.status(internalException.getStatus()).body(createExceptionResponseDTO(internalException));
     }
 
     private ExceptionResponseDTO createExceptionResponseDTO(ApiException apiException){

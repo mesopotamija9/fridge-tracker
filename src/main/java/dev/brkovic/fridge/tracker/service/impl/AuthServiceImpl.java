@@ -4,7 +4,7 @@ import dev.brkovic.fridge.api.model.*;
 import dev.brkovic.fridge.tracker.configuration.JwtConfiguration;
 import dev.brkovic.fridge.tracker.entity.RefreshTokenEntity;
 import dev.brkovic.fridge.tracker.entity.UserEntity;
-import dev.brkovic.fridge.tracker.exception.ValidationException;
+import dev.brkovic.fridge.tracker.exception.InternalException;
 import dev.brkovic.fridge.tracker.repository.RefreshTokenRepository;
 import dev.brkovic.fridge.tracker.repository.UserRepository;
 import dev.brkovic.fridge.tracker.service.AuthService;
@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             log.info("Yser with username: {} already exists", registerRequest.getUsername());
 
-            throw new ValidationException("Username already exists", HttpStatus.CONFLICT);
+            throw new InternalException("Username already exists", HttpStatus.CONFLICT);
         }
 
         UserEntity user = new UserEntity();
@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
         UserEntity user = userRepository.findByUsername(loginRequest.getUsername()).orElse(null);
         if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             log.info("Invalid credentials for username: {}", loginRequest.getUsername());
-            throw new ValidationException("Invalid credentials");
+            throw new InternalException("Invalid credentials");
         }
 
         String accessToken = jwtTokenProviderService.generateAccessToken(user.getUsername());
@@ -97,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (refreshTokenEntity == null){
             log.info("Unable to find refresh token: {}", refreshTokenRequest.getRefreshToken());
-            throw new ValidationException("Invalid refresh token");
+            throw new InternalException("Invalid refresh token");
         }
 
         String newAccess = jwtTokenProviderService.generateAccessToken(refreshTokenEntity.getUsername());

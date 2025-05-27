@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResponseCode {
     OK(0),
-    VALIDATION_FAILED(1);
+    EXPECTED_ERROR(1);
 
     private final int code;
 }

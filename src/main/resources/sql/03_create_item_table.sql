@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS public.item (
+    id VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    user_id VARCHAR(36) REFERENCES "user"(id),
+    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_name_name
+ON public.item USING BTREE (name);

@@ -8,21 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "refresh_token")
+@Table(name = "item")
 @Getter
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class RefreshTokenEntity extends BaseEntity {
-    @Column(name = "username")
-    private String username;
+public class ItemEntity extends BaseEntity {
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "token")
-    private String token;
-
-    @Column(name = "expires_at")
-    private LocalDateTime expiresAt;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 }

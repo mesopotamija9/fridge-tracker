@@ -12,3 +12,10 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: sql/02_create_refresh_token_table.sql
+
+  - changeSet:
+      id: 03_create_item_table
+      author: milosbrkovic2000@gmail.com
+      changes:
+        - sqlFile:
+            path: sql/03_create_item_table.sql
