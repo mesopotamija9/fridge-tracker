@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: Fridge Tracker API
+  version: 1.0.0
+
+tags:
+  - name: item
+    description: Item endpoints
+
+paths:
+  /api/v1/items:
+    get:
+      tags:
+        - item
+      operationId: getItems
+      summary: Get all fridge items
+      responses:
+        '200':
+          description: A list of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        bestBefore:
+          type: string
+          format: date
