@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
 
   liquibase:
     enabled: true
@@ -26,4 +26,10 @@ springdoc:
     enabled: true
     url: /docs/openapi.yaml
 
+jwt:
+  secret: A6O3gSa8dI5Z3KjgJDGYEdYGxlIeriAgcoekwfHtzyrUv2N4vD
+  accessExpirationMs: 900000    # 15 minutes
+  refreshExpirationMs: 86400000 # 1 day
+  refreshTokenExpiry:
+    cron: "0 0 * * * *"
 

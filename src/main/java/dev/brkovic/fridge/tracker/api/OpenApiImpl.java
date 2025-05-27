@@ -1,5 +1,6 @@
 package dev.brkovic.fridge.tracker.api;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@ConditionalOnProperty(name = "springdoc.swagger-ui.enabled", havingValue = "true")
 @RequestMapping("/docs")
 public class OpenApiImpl {
 
