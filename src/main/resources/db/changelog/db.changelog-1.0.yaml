@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01_create_user_table
+      author: milosbrkovic2000@gmail.com
+      changes:
+        - sqlFile:
+            path: sql/01_create_user_table.sql

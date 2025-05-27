@@ -1,0 +1,21 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: Fridge Tracker
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fridge_tracker
+    username: fridge_tracker_user
+    password: zMONnm58juGG9Y87q6FYyRWs
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
