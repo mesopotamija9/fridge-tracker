@@ -19,3 +19,17 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: sql/03_create_item_table.sql
+
+  - changeSet:
+      id: 04_create_fridge_table
+      author: milosbrkovic2000@gmail.com
+      changes:
+        - sqlFile:
+            path: sql/04_create_fridge_table.sql
+
+  - changeSet:
+      id: 05_create_fridge_item_table
+      author: milosbrkovic2000@gmail.com
+      changes:
+        - sqlFile:
+            path: sql/05_create_fridge_item_table.sql

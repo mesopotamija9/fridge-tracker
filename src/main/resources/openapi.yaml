@@ -197,7 +197,218 @@ paths:
           description: Not found
 
   # Fridges
-  # Fridge-Items
+  /api/v1/fridges:
+    get:
+      tags:
+        - fridges
+      operationId: getAllFridges
+      summary: List all fridges for current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: A list of fridges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FridgeResponse'
+    post:
+      tags:
+        - fridges
+      operationId: createFridge
+      summary: Create a new fridge
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFridgeRequest'
+      responses:
+        '201':
+          description: Fridge created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FridgeResponse'
+
+  /api/v1/fridges/{fridgeId}:
+    get:
+      tags:
+        - fridges
+      operationId: getFridge
+      summary: Get fridge details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fridge details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FridgeResponse'
+        '404':
+          description: Not found
+    put:
+      tags:
+        - fridges
+      operationId: updateFridge
+      summary: Update fridge name
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFridgeRequest'
+      responses:
+        '200':
+          description: Fridge updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FridgeResponse'
+    delete:
+      tags:
+        - fridges
+      operationId: deleteFridge
+      summary: Delete a fridge
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted successfully
+        '404':
+          description: Not found
+
+  # Fridge Items
+  /api/v1/fridges/{fridgeId}/items:
+    get:
+      tags:
+        - fridge-items
+      operationId: getFridgeItems
+      summary: List all items in a fridge
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of fridge items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FridgeItemResponse'
+    post:
+      tags:
+        - fridge-items
+      operationId: addItemToFridge
+      summary: Add item to fridge
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddFridgeItemRequest'
+      responses:
+        '201':
+          description: Item added to fridge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FridgeItemResponse'
+
+  /api/v1/fridges/{fridgeId}/items/{fridgeItemId}:
+    delete:
+      tags:
+        - fridge-items
+      operationId: removeItemFromFridge
+      summary: Remove item from fridge
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fridgeItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Item removed
+        '404':
+          description: Not found
+    put:
+      tags:
+        - fridge-items
+      operationId: updateFridgeItem
+      summary: Update item's best before date
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fridgeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: fridgeItemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFridgeItemRequest'
+      responses:
+        '200':
+          description: Best before date updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FridgeItemResponse'
 
 components:
   schemas:
@@ -288,8 +499,85 @@ components:
           type: string
           description: Updated name of the item
 
-    # Fridges
-    # Fridge-Item Instances
+    # Fridge Schemas
+    CreateFridgeRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+
+    FridgeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+
+    UpdateFridgeRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+
+    # Fridge Item Schemas
+    AddFridgeItemRequest:
+      type: object
+      required:
+        - itemId
+        - storedAt
+        - bestBeforeDate
+      properties:
+        itemId:
+          type: string
+        storedAt:
+          type: string
+          format: date-time
+        bestBeforeDate:
+          type: string
+          format: date-time
+
+    FridgeItemResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        fridgeId:
+          type: string
+        itemId:
+          type: string
+        itemName:
+          type: string
+        bestBeforeDate:
+          type: string
+          format: date-time
+        storedAt:
+          type: string
+          format: date-time
+
+    UpdateFridgeItemRequest:
+      type: object
+      required:
+        - storedAt
+        - bestBeforeDate
+      properties:
+        storedAt:
+          type: string
+          format: date-time
+        bestBeforeDate:
+          type: string
+          format: date-time
 
   securitySchemes:
     bearerAuth:

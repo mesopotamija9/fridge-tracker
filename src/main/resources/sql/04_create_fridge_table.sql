@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.item (
+CREATE TABLE IF NOT EXISTS public.fridge (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     user_id VARCHAR(36) REFERENCES "user"(id),
@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS public.item (
     last_updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_item_name
-ON public.item USING BTREE (name);
+CREATE INDEX IF NOT EXISTS idx_fridge_name
+ON public.fridge USING BTREE (name);

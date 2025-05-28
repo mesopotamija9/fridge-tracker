@@ -26,6 +26,8 @@ springdoc:
     enabled: true
     url: /docs/openapi.yaml
 
+frontend-url: http://localhost:5173
+
 jwt:
   secret: A6O3gSa8dI5Z3KjgJDGYEdYGxlIeriAgcoekwfHtzyrUv2N4vD
   accessExpirationMs: 900000    # 15 minutes

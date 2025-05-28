@@ -36,7 +36,7 @@ public class ItemsApiImpl implements ItemsApi {
         itemService.deleteItem(itemId);
 
         log.info("Successful delete item with id: {}", itemId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override

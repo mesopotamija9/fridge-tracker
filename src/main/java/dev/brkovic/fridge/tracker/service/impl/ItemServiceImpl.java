@@ -7,11 +7,13 @@ import dev.brkovic.fridge.tracker.entity.ItemEntity;
 import dev.brkovic.fridge.tracker.entity.UserEntity;
 import dev.brkovic.fridge.tracker.exception.InternalException;
 import dev.brkovic.fridge.tracker.mapper.ItemMapper;
+import dev.brkovic.fridge.tracker.repository.FridgeItemRepository;
 import dev.brkovic.fridge.tracker.repository.ItemRepository;
 import dev.brkovic.fridge.tracker.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,9 +23,11 @@ import java.util.List;
 public class ItemServiceImpl extends BaseService implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final FridgeItemRepository fridgeItemRepository;
     private final ItemMapper itemMapper;
 
     @Override
+    @Transactional
     public ItemResponse createItem(CreateItemRequest createItemRequest) {
         log.info("Creating new item for createItemRequest: {}", createItemRequest);
 
@@ -33,7 +37,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         item.setName(createItemRequest.getName());
         item.setUserId(loggedInUsers.getId());
 
-        item = itemRepository.save(item);
+        item = itemRepository.saveAndFlush(item);
         log.info("Successfully created new item: {}", item);
 
         return itemMapper.itemEntityToItemResponse(item);
@@ -63,11 +67,8 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         log.info("Fetching all items for current user with username: {}", loggedInUser.getUsername());
 
         List<ItemEntity> items = itemRepository.findByUserId(loggedInUser.getId());
-        if (items.isEmpty()) {
-            log.info("No items found for user with ID: {}", loggedInUser.getId());
-        }
 
-        log.info("Successfully fetched {} items", items.size());
+        log.info("Successfully fetched {} items for user with username: {}", items.size(), loggedInUser.getUsername());
 
         return items.stream()
                 .map(itemMapper::itemEntityToItemResponse)
@@ -75,6 +76,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemResponse updateItem(String itemId, UpdateItemRequest updateItemRequest) {
         log.info("Updating item with ID: {} using request: {}", itemId, updateItemRequest);
 
@@ -87,7 +89,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         }
 
         item.setName(updateItemRequest.getName());
-        item = itemRepository.save(item);
+        item = itemRepository.saveAndFlush(item);
 
         log.info("Successfully updated item: {}", item);
 
@@ -95,6 +97,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
     }
 
     @Override
+    @Transactional
     public void deleteItem(String itemId) {
         log.info("Deleting item with ID: {}", itemId);
 
@@ -104,6 +107,12 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         if (item == null) {
             log.info("Item not found with ID: {} for user ID: {}", itemId, loggedInUser.getId());
             throw new InternalException(String.format("Item not found with ID: %s", itemId));
+        }
+
+        int fridgesCount = fridgeItemRepository.countFridgesForItemId(itemId);
+        if (fridgesCount > 0) {
+            log.info("Can not delete item with ID: {} because {} fridges contain it", itemId, fridgesCount);
+            throw new InternalException("Can not delete item that is any fridge");
         }
 
         itemRepository.delete(item);
