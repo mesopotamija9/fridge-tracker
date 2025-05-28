@@ -2,7 +2,7 @@ package dev.brkovic.fridge.tracker.dto;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface FridgeItemDTO {
     @Value("#{target.id}")
@@ -15,10 +15,10 @@ public interface FridgeItemDTO {
     String getItemId();
 
     @Value("#{target.stored_at}")
-    Date getStoredAt();
+    LocalDate getStoredAt();
 
     @Value("#{target.best_before_date}")
-    Date getBestBeforeDate();
+    LocalDate getBestBeforeDate();
 
     @Value("#{target.item_name}")
     String getItemName();

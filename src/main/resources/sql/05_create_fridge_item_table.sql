@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS public.fridge_item (
     id VARCHAR(36) PRIMARY KEY,
     fridge_id VARCHAR(36) REFERENCES fridge(id),
     item_id VARCHAR(36) REFERENCES item(id),
-    stored_at TIMESTAMP NOT NULL,
-    best_before_date TIMESTAMP NOT NULL,
+    stored_at DATE NOT NULL,
+    best_before_date DATE NOT NULL,
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

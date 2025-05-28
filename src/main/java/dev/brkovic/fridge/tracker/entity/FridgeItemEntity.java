@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "fridge_item")
@@ -24,8 +24,8 @@ public class FridgeItemEntity extends BaseEntity {
     private String itemId;
 
     @Column(name = "stored_at", nullable = false)
-    private OffsetDateTime storedAt;
+    private LocalDate storedAt;
 
     @Column(name = "best_before_date", nullable = false)
-    private OffsetDateTime bestBeforeDate;
+    private LocalDate bestBeforeDate;
 }

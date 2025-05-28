@@ -562,10 +562,10 @@ components:
           type: string
         storedAt:
           type: string
-          format: date-time
+          format: date
         bestBeforeDate:
           type: string
-          format: date-time
+          format: date
 
     FridgeItemResponse:
       type: object
@@ -580,10 +580,10 @@ components:
           type: string
         bestBeforeDate:
           type: string
-          format: date-time
+          format: date
         storedAt:
           type: string
-          format: date-time
+          format: date
 
     UpdateFridgeItemRequest:
       type: object
@@ -593,10 +593,10 @@ components:
       properties:
         storedAt:
           type: string
-          format: date-time
+          format: date
         bestBeforeDate:
           type: string
-          format: date-time
+          format: date
 
   securitySchemes:
     bearerAuth:
