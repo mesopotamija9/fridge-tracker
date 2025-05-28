@@ -90,7 +90,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Override
     @Transactional
-    public TokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         log.info("Processing refreshTokenRequest: {}", refreshTokenRequest);
 
         RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByToken(refreshTokenRequest.getRefreshToken())
@@ -109,12 +109,13 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         refreshTokenEntity = refreshTokenRepository.save(refreshTokenEntity);
         log.info("Updated refresh token: {}", refreshTokenEntity);
 
-        TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setAccessToken(newAccess);
-        tokenResponse.setRefreshToken(newRefreshToken);
+        Tokens tokens = createTokens(newAccess, newRefreshToken);
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setTokens(tokens);
 
         log.info("Successfully refreshed token: {}", refreshTokenRequest.getRefreshToken());
-        return tokenResponse;
+        return authResponse;
     }
 
     @Override

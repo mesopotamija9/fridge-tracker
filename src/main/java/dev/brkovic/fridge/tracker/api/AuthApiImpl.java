@@ -44,9 +44,9 @@ public class AuthApiImpl implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<TokenResponse> refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<AuthResponse> refreshToken(RefreshTokenRequest refreshTokenRequest) {
         log.info("Received refresh token request: {}", refreshTokenRequest);
-        TokenResponse response = authService.refreshToken(refreshTokenRequest);
+        AuthResponse response = authService.refreshToken(refreshTokenRequest);
 
         log.info("Successfully refreshed token. Returning response: {}", response);
         return ResponseEntity.ok(response);

@@ -5,7 +5,7 @@ import dev.brkovic.fridge.api.model.*;
 public interface AuthService {
     AuthResponse register(RegisterRequest registerRequest);
     AuthResponse login(LoginRequest loginRequest);
-    TokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+    AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
     void logout();
     void removeExpiredRefreshTokens();
 }
