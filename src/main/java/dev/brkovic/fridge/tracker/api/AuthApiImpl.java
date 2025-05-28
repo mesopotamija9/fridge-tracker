@@ -26,6 +26,15 @@ public class AuthApiImpl implements AuthApi {
     }
 
     @Override
+    public ResponseEntity<Void> apiV1AuthLogoutPost() {
+        log.info("Received logout request");
+        authService.logout();
+
+        log.info("Successful logged out user");
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
     public ResponseEntity<AuthResponse> login(LoginRequest loginRequest) {
         log.info("Received login request: {}", loginRequest);
         AuthResponse response = authService.login(loginRequest);

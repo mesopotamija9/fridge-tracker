@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl extends BaseService implements AuthService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -39,11 +39,12 @@ public class AuthServiceImpl implements AuthService {
             throw new InternalException("Username already exists", HttpStatus.CONFLICT);
         }
 
-        UserEntity user = new UserEntity();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        userRepository.save(user);
-        log.info("Created new user with username: {}", user.getUsername());
+        if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirmation())) {
+            log.info("Password confirmation does not match password");
+            throw new InternalException("Password confirmation does not match password");
+        }
+
+        UserEntity user = createNewUser(registerRequest);
 
         String accessToken = jwtTokenProviderService.generateAccessToken(user.getUsername());
         String refreshToken = jwtTokenProviderService.generateRefreshToken();
@@ -118,6 +119,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
+    public void logout() {
+        UserEntity user = getLoggedInUser();
+
+        log.info("Processing logout for use with username: {}", user.getUsername());
+
+        int removedCount = refreshTokenRepository.removeRefreshTokensForUsername(user.getUsername());
+
+        log.info("Removed {} refresh tokens for user with username: {}", removedCount, user.getUsername());
+    }
+
+    @Override
+    @Transactional
     public void removeExpiredRefreshTokens(){
         log.info("Removing expired refresh tokens");
 
@@ -142,5 +155,17 @@ public class AuthServiceImpl implements AuthService {
         tokens.setRefreshToken(refreshToken);
 
         return tokens;
+    }
+
+    private UserEntity createNewUser(RegisterRequest registerRequest){
+        UserEntity user = new UserEntity();
+
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        user = userRepository.save(user);
+        log.info("Created new user with username: {}", user.getUsername());
+
+        return user;
     }
 }
