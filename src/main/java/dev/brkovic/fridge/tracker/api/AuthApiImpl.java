@@ -26,7 +26,7 @@ public class AuthApiImpl implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<Void> apiV1AuthLogoutPost() {
+    public ResponseEntity<Void> logout() {
         log.info("Received logout request");
         authService.logout();
 

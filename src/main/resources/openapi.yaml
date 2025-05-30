@@ -89,6 +89,7 @@ paths:
         - auth
       summary: Logout current user
       description: Invalidate the refresh token for the authenticated user
+      operationId: logout
       security:
         - bearerAuth: []
       responses:
