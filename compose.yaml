@@ -1,9 +1,0 @@
-services:
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - 'POSTGRES_DB=fridge_tracker'
-      - 'POSTGRES_PASSWORD=zMONnm58juGG9Y87q6FYyRWs'
-      - 'POSTGRES_USER=fridge_tracker_user'
-    ports:
-      - '5432:5432'

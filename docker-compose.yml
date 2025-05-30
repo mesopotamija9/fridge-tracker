@@ -1,0 +1,41 @@
+services:
+  fridge-tracker-backend:
+    build: .
+    container_name: fridge-tracker-be
+    ports:
+      - '9000:9000'
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/fridge_tracker'
+      - 'SPRING_DATASOURCE_USERNAME=fridge_tracker_user'
+      - 'SPRING_DATASOURCE_PASSWORD=zMONnm58juGG9Y87q6FYyRWs'
+      - 'SERVER_PORT=9000'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fridge-tracker-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=fridge_tracker'
+      - 'POSTGRES_PASSWORD=zMONnm58juGG9Y87q6FYyRWs'
+      - 'POSTGRES_USER=fridge_tracker_user'
+    ports:
+      - '5432:5432'
+    networks:
+      - fridge-tracker-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fridge_tracker_user -d fridge_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  fridge-tracker-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
