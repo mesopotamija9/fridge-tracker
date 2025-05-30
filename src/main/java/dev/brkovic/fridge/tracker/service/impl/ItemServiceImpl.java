@@ -112,7 +112,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         int fridgesCount = fridgeItemRepository.countFridgesForItemId(itemId);
         if (fridgesCount > 0) {
             log.info("Can not delete item with ID: {} because {} fridges contain it", itemId, fridgesCount);
-            throw new InternalException("Can not delete item that is any fridge");
+            throw new InternalException("Can not delete item that is stored in any fridge");
         }
 
         itemRepository.delete(item);
