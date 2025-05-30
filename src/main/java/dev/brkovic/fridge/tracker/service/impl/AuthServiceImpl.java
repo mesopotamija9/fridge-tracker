@@ -6,7 +6,6 @@ import dev.brkovic.fridge.tracker.entity.RefreshTokenEntity;
 import dev.brkovic.fridge.tracker.entity.UserEntity;
 import dev.brkovic.fridge.tracker.exception.InternalException;
 import dev.brkovic.fridge.tracker.repository.RefreshTokenRepository;
-import dev.brkovic.fridge.tracker.repository.UserRepository;
 import dev.brkovic.fridge.tracker.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AuthServiceImpl extends BaseService implements AuthService {
 
-    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProviderServiceImpl jwtTokenProviderService;
     private final JwtConfiguration jwtConfiguration;
